@@ -1,13 +1,14 @@
 package Notenrechnerv2;
 import java.util.ArrayList;
 
+
 public class Lehrer {
     //Fach 
     //Schüler
     //Test
     private ArrayList<Fach> Fachliste=new ArrayList<Fach>();
     private ArrayList<Schüler> Schülerliste=new ArrayList<Schüler>();
-    private ArrayList<String> Testliste=new ArrayList<String>();
+    private ArrayList<Test> Testliste=new ArrayList<Test>();
     public Lehrer(){
 
     }
@@ -63,6 +64,9 @@ public class Lehrer {
         sb.append("\nFächer:\n");
         Fachliste.forEach((fach) -> { sb.append(fach.Fachname + ", ");});
 
+        sb.append("\nTest im Fach:\n");
+        Testliste.forEach((test) -> {sb.append("ID:"+test.id+test.Fach+" Test: "+test.Testname+"\n");});
+
         return sb.toString();
     }
     public void addSchüler(String Schülername){
@@ -105,6 +109,89 @@ public class Lehrer {
             
         }
         return -1;
+    }
+
+
+
+
+
+    public void addTest(String Fachname,String Testname){
+        long id =getfreeTestID();
+        if(!isFachPresent(Fachname)){
+            return;
+        }
+        if(isTestPresent(Testname)){
+            return;
+        }
+        if(getfreeTestID()==-1){
+            id=1;
+        }else{
+            id=getfreeTestID();
+        }
+        Test myTest=new Test(id,Fachname,Testname);
+        Testliste.add(myTest);
+    }
+    public void editTest(long id, String Solltestname){
+        if(isTestPresent(id)){
+            return;
+        }
+        int index=getindexOfTest(id);
+        if(index==-1){
+            return;
+        }
+        Testliste.get(index).Testname=Solltestname;
+    }
+    public void removeTest(String Testname){
+        //Testliste durchiterieren
+        int index=getindexOfTest(Testname);
+        if(index==-1){
+            return;
+        }
+        //Test aus Testliste löschen
+        Testliste.remove(index);
+
+    }
+
+    private boolean isTestPresent(String searchedTest){
+        return getindexOfTest(searchedTest)!=-1;
+    }
+    private boolean isTestPresent(long id){
+        return getindexOfTest(id)!=-1;
+    }
+    private int getindexOfTest(String searchedTest){
+        //findet den Index des Test in der Testliste
+        for(int i=0;i<Testliste.size();i++){
+            if(Testliste.get(i).Testname==searchedTest){
+                return i;
+            }
+            
+        }
+        return -1;
+    }
+    private int getindexOfTest(long id){
+        for(int i=0;i<Testliste.size();i++){
+            if(Testliste.get(i).id==id){
+                return i;
+            }
+
+
+        }
+        return -1;
+    }
+    private long getfreeTestID(){
+        //findet den Index des Schülers in der Schülerliste
+        long highest=-1;
+        for(int i=0;i<Testliste.size();i++){
+            
+            if(Testliste.get(i).id>highest){
+                highest=Testliste.get(i).id;
+            }
+            
+        }
+        if(highest==-1){
+            return highest;
+        }
+        return highest+1;
     }
 
 
