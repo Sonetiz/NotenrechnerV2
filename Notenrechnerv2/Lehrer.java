@@ -65,7 +65,7 @@ public class Lehrer {
         Fachliste.forEach((fach) -> { sb.append(fach.Fachname + ", ");});
 
         sb.append("\nTest im Fach:\n");
-        Testliste.forEach((test) -> {sb.append("ID:"+test.id+test.Fach+" Test: "+test.Testname+"\n");});
+        Testliste.forEach((test) -> {sb.append(test.Fach+" Test: "+test.Testname+"\n");});
 
         return sb.toString();
     }
@@ -116,34 +116,30 @@ public class Lehrer {
 
 
     public void addTest(String Fachname,String Testname){
-        long id =getfreeTestID();
+        
         if(!isFachPresent(Fachname)){
             return;
         }
-        if(isTestPresent(Testname)){
+        if(isTestPresent(Testname,Fachname)){
             return;
         }
-        if(getfreeTestID()==-1){
-            id=1;
-        }else{
-            id=getfreeTestID();
-        }
-        Test myTest=new Test(id,Fachname,Testname);
+        
+        Test myTest=new Test(Fachname,Testname);
         Testliste.add(myTest);
     }
-    public void editTest(long id, String Solltestname){
-        if(isTestPresent(id)){
+    public void editTest(String Fachname,String Isttestname, String Solltestname){
+        if(isTestPresent(Fachname,Isttestname)){
             return;
         }
-        int index=getindexOfTest(id);
+        int index=getIndexOfTest(Fachname,Isttestname);
         if(index==-1){
             return;
         }
         Testliste.get(index).Testname=Solltestname;
     }
-    public void removeTest(String Testname){
+    public void removeTest(String Fachname,String Testname){
         //Testliste durchiterieren
-        int index=getindexOfTest(Testname);
+        int index=getIndexOfTest(Fachname,Testname);
         if(index==-1){
             return;
         }
@@ -152,47 +148,26 @@ public class Lehrer {
 
     }
 
-    private boolean isTestPresent(String searchedTest){
-        return getindexOfTest(searchedTest)!=-1;
+    private boolean isTestPresent(String searchedTestName, String searchedFach) {
+        for (Test test : Testliste) {
+            if (test.Testname.equals(searchedTestName) && test.Fach.equals(searchedFach)) {
+                return true;
+            }
+        }
+        return false;
     }
-    private boolean isTestPresent(long id){
-        return getindexOfTest(id)!=-1;
-    }
-    private int getindexOfTest(String searchedTest){
-        //findet den Index des Test in der Testliste
-        for(int i=0;i<Testliste.size();i++){
-            if(Testliste.get(i).Testname==searchedTest){
+    
+    private int getIndexOfTest(String searchedFach,String searchedTestName) {
+        for (int i = 0; i < Testliste.size(); i++) {
+            Test test = Testliste.get(i);
+            if (test.Testname.equals(searchedTestName) && test.Fach.equals(searchedFach)) {
                 return i;
             }
-            
         }
         return -1;
     }
-    private int getindexOfTest(long id){
-        for(int i=0;i<Testliste.size();i++){
-            if(Testliste.get(i).id==id){
-                return i;
-            }
-
-
-        }
-        return -1;
-    }
-    private long getfreeTestID(){
-        //findet den Index des Schülers in der Schülerliste
-        long highest=-1;
-        for(int i=0;i<Testliste.size();i++){
-            
-            if(Testliste.get(i).id>highest){
-                highest=Testliste.get(i).id;
-            }
-            
-        }
-        if(highest==-1){
-            return highest;
-        }
-        return highest+1;
-    }
+    
+    
 
 
 
