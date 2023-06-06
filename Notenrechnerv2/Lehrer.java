@@ -229,16 +229,163 @@ public class Lehrer {
         }
         return new String[0];
     }
+    //TestaddNote(Fach,Test,Schueler,Note)
+    public void TestaddNote(String FachString,String TestString,String SchuelerString,int Note){
+        if(!isFachPresent(FachString)){
+            return;
+        }
+        if(!isTestPresent(FachString,TestString)){
+            return;
+        }
+        for(Test test:Testliste){
+            if(test.Fach==FachString&&test.Testname==TestString){
+            if(!test.isSchuelerpresent(SchuelerString)){
+                test.addSchueler(SchuelerString);
+            }
+            test.addNote(SchuelerString, Note);
+        }
+        }
+
+
+
+    }
+    //TesteditNote(Fach,Test,Schueler,Note)
+    public void TesteditNote(String FachString,String TestString,String SchuelerString,int newNote){
+        if(!isFachPresent(FachString)){
+            return;
+        }
+        if(!isTestPresent(FachString,TestString)){
+            return;
+        }
+        for(Test test:Testliste){
+            if(test.Fach==FachString&&test.Testname==TestString){
+            if(!test.isSchuelerpresent(SchuelerString)){
+                return;
+            }
+            test.editNote(SchuelerString, newNote);
+
+        }
+        }
+
+
+
+    }
+    //TestremoveNote(Fach,Test,Schuler)
+    public void TestremoveNote(String FachString,String TestString,String SchuelerString){
+        if(!isFachPresent(FachString)){
+            return;
+        }
+        if(!isTestPresent(FachString,TestString)){
+            return;
+        }
+        for(Test test:Testliste){
+            if(test.Fach==FachString&&test.Testname==TestString){
+            if(!test.isSchuelerpresent(SchuelerString)){
+                return;
+            }
+            test.removeNote(SchuelerString);
+
+        }
+        }
+
+
+
+    }
+    //TestremoveSchueler
+    public void TestremoveSchueler(String FachString,String TestString,String SchuelerString){
+        if(!isFachPresent(FachString)){
+            return;
+        }
+        if(!isTestPresent(FachString,TestString)){
+            return;
+        }
+        for(Test test:Testliste){
+            if(test.Fach==FachString&&test.Testname==TestString){
+            if(!test.isSchuelerpresent(SchuelerString)){
+                return;
+            }
+            test.removeSchueler(SchuelerString);
+
+        }
+        }
+
+
+
+    }
+    
+
+    //getNote(Fach,Test,Schueler)
+    public void TestgetNote(String FachString,String TestString,String SchuelerString){
+        if(!isFachPresent(FachString)){
+            return;
+        }
+        if(!isTestPresent(FachString,TestString)){
+            return;
+        }
+        for(Test test:Testliste){
+            if(test.Fach==FachString&&test.Testname==TestString){
+            if(!test.isSchuelerpresent(SchuelerString)){
+                return;
+            }
+            test.getNote(SchuelerString);
+
+        }
+        }
+
+
+
+    }
+    //getTestaverage
+    public int Testgetaverage(String fachString,String testString){
+        if(!isFachPresent(fachString)){
+            return -1;
+        }
+        if(!isTestPresent(fachString,testString)){
+            return -1;
+        }
+        for(Test test:Testliste){
+            if(test.Fach==fachString&&test.Testname==testString){
+                return test.getTestaverage();
+            }
+        }
+        return -1;
+
+    }
+
 
     //getFaecher
+    public String[] getFaecher(){
+        if(Fachliste.size()==0){
+            return new String[0];
+        }
+        String[] temparr=new String[Fachliste.size()];
+        int i=0;
+        for(Fach fach:Fachliste){
+            temparr[i]=fach.Fachname;
+            i++;
+        }
+        return temparr;
+    }
     //getTests(Fach)
-    //getSchuelers(Fach)
+    public String[] getTests(String fachString){
+        if(!isFachPresent(fachString)){
+            return new String[0];
+        }
+        ArrayList<String> temp =new ArrayList<String>();
+        for(Test test:Testliste){
+            if(test.Fach==fachString){
+                temp.add(test.Testname);
+            }
+        }
+        if(temp.size()==0){
+            return new String[0];
+        }
+        return (String[]) temp.toArray();
+
+    }
+    
     //getSchuelers(Fach,Test)---------------
     //initTest(Fach,Test,[Schueler])
-    //TestaddNote(Fach,Test,Schueler,Note)
-    //TesteditNote(Fach,Test,Schueler,Note)
-    //TestremoveNote(Fach,Test,Schuler)
-    //getNote(Fach,Test,Schueler)
     //getZeugnisnote(Fach,Schueler)
     //convertentry(1-6)
     //convertexit(0-15)
