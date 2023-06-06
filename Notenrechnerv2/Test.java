@@ -16,7 +16,36 @@ public class Test {
         
 
     }
+
+    //addSchueler(Schueler)
+    public void addSchueler(String Schuelername){
+        if(Testmap.containsKey(Schuelername)){
+            return;
+        }
+        Testmap.put(Schuelername,-1);
+    }
     
+    //removeSchueler(Schueler)
+
+    public void removeSchueler(String Schuelername){
+        if(!Testmap.containsKey(Schuelername)){
+            return;
+        }
+        Testmap.remove(Schuelername);
+    }
+    //addNote(Schueler,Note)
+    //editNote(Schueler,Note)
+    //getNote(Schuler)
+    //getTestaverage()
+    //getSchuelers()
+    public String[] getSchuelers(){
+        if(Testmap.isEmpty()){
+            return new String[0];
+        }
+        return Testmap.keySet().toArray(new String[Testmap.keySet().size()]);
+            
+        
+    }
 
     
 }

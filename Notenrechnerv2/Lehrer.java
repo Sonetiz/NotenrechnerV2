@@ -69,6 +69,16 @@ public class Lehrer {
 
         return sb.toString();
     }
+    public String toString(String Fachname,String Testname){
+        StringBuilder sb=new StringBuilder();
+        sb.append("\nFach\n"+Fachname);
+        sb.append("\nTest\n"+Testname);
+        for (String str : getSchuelersfromTest(Fachname, Testname)) {
+            sb.append(str);
+        }
+        return sb.toString();
+
+    }
     public void addSchüler(String Schülername){
         if(isSchülerPresent(Schülername)){
             return;
@@ -148,7 +158,7 @@ public class Lehrer {
 
     }
 
-    private boolean isTestPresent(String searchedTestName, String searchedFach) {
+    private boolean isTestPresent(String searchedFach,String searchedTestName) {
         for (Test test : Testliste) {
             if (test.Testname.equals(searchedTestName) && test.Fach.equals(searchedFach)) {
                 return true;
@@ -166,6 +176,72 @@ public class Lehrer {
         }
         return -1;
     }
+
+    //addSchuelertoTest(Fach,Test,Schueler)
+
+    public void addSchuelertoTest(String Fachname,String Test,String Schueler){
+        if(!isFachPresent(Fachname)){
+            return;
+        }
+        if(!isTestPresent(Fachname,Test)){
+            return;
+        }
+        for (Test test:Testliste) {
+            if(test.Fach==Fachname&&test.Testname==Test){
+                test.Testmap.put(Schueler,-1);
+            }
+            
+        }
+    }
+    //removeSchuelerfromtTest(Fach,Test,Schueler)
+    public void removeSchuelerfromTest(String Fachname,String Test,String Schueler){
+        if(!isFachPresent(Fachname)){
+            return;
+        }
+        if(!isTestPresent(Fachname,Test)){
+            return;
+        }
+        for (Test test:Testliste) {
+            if(test.Fach==Fachname&&test.Testname==Test){
+                if(!test.Testmap.containsKey(Schueler)){
+                    return;
+                }
+                test.Testmap.remove(Schueler);
+                
+            }
+            
+        }
+    }
+    
+    //getSchuelers(Fach,Test)
+    public String[] getSchuelersfromTest(String Fachname,String Test){
+        if(!isFachPresent(Fachname)){
+            return new String[0];
+        }
+        if(!isTestPresent(Fachname,Test)){
+            return new String[0];
+        }
+        for(Test test :Testliste){
+            if(test.Fach==Fachname&&test.Testname==Test){
+                return test.getSchuelers();
+
+            }
+        }
+        return new String[0];
+    }
+
+    //getFaecher
+    //getTests(Fach)
+    //getSchuelers(Fach)
+    //getSchuelers(Fach,Test)---------------
+    //initTest(Fach,Test,[Schueler])
+    //TestaddNote(Fach,Test,Schueler,Note)
+    //TesteditNote(Fach,Test,Schueler,Note)
+    //TestremoveNote(Fach,Test,Schuler)
+    //getNote(Fach,Test,Schueler)
+    //getZeugnisnote(Fach,Schueler)
+    //convertentry(1-6)
+    //convertexit(0-15)
     
     
 

@@ -41,13 +41,30 @@ public static void main(String[] args)  {
 
     System.out.println(lehrer.toString());
     //Test bearbeiten
-    //lehrer.editTest("Epochalnote", "Epo");
+    lehrer.editTest("Mathe","Epochalnote", "Epo");
 
     //Test loeschen
-    //lehrer.removeTest("HUE");
+    lehrer.removeTest("Mathe","HUE");
 
     System.out.println(lehrer.toString());
+    //Test addSchueler
+    lehrer.addSchuelertoTest("Mathe", "Epo", "Jonas");
+    lehrer.addSchuelertoTest("Mathe", "Epo", "Simon");
+    lehrer.addSchuelertoTest("Mathe", "Epo", "Max");
+    lehrer.addSchuelertoTest("Mathe", "Epo", "Tobedeleted");
+    System.out.println(lehrer.toString("Mathe", "Epo"));
+    
+    //Test removeSchueler
+    //Test getSchuelers
 
+
+
+
+    //Test addNote
+    //Test editNote
+    //Test getNote
+    //Test getTestaverage
+    
     
 }
 }
