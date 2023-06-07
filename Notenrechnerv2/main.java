@@ -1,6 +1,7 @@
 package Notenrechnerv2;
 
 public class main{
+    //diese Main Methode dient lediglich dem Debugging während der entwicklung
 public static void main(String[] args)  {
 
     Lehrer lehrer=new Lehrer();

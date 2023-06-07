@@ -1,11 +1,13 @@
 package Notenrechnerv2;
 import java.util.ArrayList;
+//Haupt Objekt welches die Test,Fach und Schülerobjekte erstellt und Verwaltet.
 
 
 public class Lehrer {
     //Fach 
     //Schüler
     //Test
+    //prinzipiell werden innerhalb des Objekts Lehrer die erstellten "child"Objekte (Tests,Fächer,Schüler) in Arraylisten gespeichert
     private ArrayList<Fach> Fachliste=new ArrayList<Fach>();
     private ArrayList<Schüler> Schülerliste=new ArrayList<Schüler>();
     private ArrayList<Test> Testliste=new ArrayList<Test>();
@@ -14,7 +16,7 @@ public class Lehrer {
     }
     
     
-    
+    //hinzufügen neues Fach
     public void addFach(String Fachname){
         if(isFachPresent(Fachname)){
             return;
@@ -23,6 +25,7 @@ public class Lehrer {
         Fachliste.add(myFach);
 
     }
+    //entfernen bestehendes Fach
     public void removeFach(String Fachname){
         //Fachliste durchiterieren
         int index=getindexOfFach(Fachname);
@@ -31,8 +34,8 @@ public class Lehrer {
         }
         //Fach aus Fachlist löschen
         Fachliste.remove(index);
-
     }
+    //bearbeiten bestehendes Fach
     public void editFach(String Istfachname, String Sollfachname){
         if(isFachPresent(Sollfachname)){
             return;
@@ -43,9 +46,11 @@ public class Lehrer {
         }
         Fachliste.get(index).Fachname=Sollfachname;
     }
+    //check ob ein Fach bereits angelegt ist
     private boolean isFachPresent(String searchedFach){
         return getindexOfFach(searchedFach)!=-1;
     }
+    //findet den Index des Fachs in der Fachliste oder returned -1 wenn das Fach nicht gefunden wird
     private int getindexOfFach(String searchedFach){
         //findet den Index des Fachs in der Fachliste
         for(int i=0;i<Fachliste.size();i++){
@@ -56,6 +61,7 @@ public class Lehrer {
         }
         return -1;
     }
+    //fügt neuen Schüler hinzu
     public void addSchüler(String Schülername){
         if(isSchülerPresent(Schülername)){
             return;
@@ -64,6 +70,7 @@ public class Lehrer {
         Schülerliste.add(mySchüler);
 
     }
+    //entfernt einen existierenden Schüler
     public void removeSchüler(String Schülername){
         //Schülerliste durchiterieren
         int index=getindexOfSchüler(Schülername);
@@ -74,6 +81,7 @@ public class Lehrer {
         Schülerliste.remove(index);
         
     }
+    //bearbeitet existierenden Schüler
     public void editSchüler(String Istschülername, String Sollschülername){
         if(isSchülerPresent(Sollschülername)){
             return;
@@ -84,9 +92,11 @@ public class Lehrer {
         }
         Schülerliste.get(index).Schülername=Sollschülername;
     }
+    //prüft ob ein Schüler bereits angelegt ist
     private boolean isSchülerPresent(String searchedSchüler){
         return getindexOfSchüler(searchedSchüler)!=-1;
     }
+    //findet den Index eines Schülers in der Schülerliste oder wenn er nicht existiert returned -1
     private int getindexOfSchüler(String searchedSchüler){
         //findet den Index des Schülers in der Schülerliste
         for(int i=0;i<Schülerliste.size();i++){
@@ -101,7 +111,8 @@ public class Lehrer {
 
 
     
-
+    //bei allen Tests wird immer geprüft ob das zuzuordnende Fach existiert
+    //fügt neuen Test hinzu 
     public void addTest(String Fachname,String Testname){
         
         if(!isFachPresent(Fachname)){
@@ -114,6 +125,7 @@ public class Lehrer {
         Test myTest=new Test(Fachname,Testname);
         Testliste.add(myTest);
     }
+    //bearbeitet existierenden Test
     public void editTest(String Fachname,String Isttestname, String Solltestname){
         if(!isTestPresent(Fachname,Isttestname)){
             return;
@@ -124,6 +136,7 @@ public class Lehrer {
         }
         Testliste.get(index).Testname=Solltestname;
     }
+    //entfernt existierenden Test
     public void removeTest(String Fachname,String Testname){
         //Testliste durchiterieren
         int index=getIndexOfTest(Fachname,Testname);
@@ -134,7 +147,7 @@ public class Lehrer {
         Testliste.remove(index);
 
     }
-
+    //prüft ob ein Test existiert
     private boolean isTestPresent(String searchedFach,String searchedTestName) {
         for (Test test : Testliste) {
             if (test.Testname.equals(searchedTestName) && test.Fach.equals(searchedFach)) {
@@ -143,7 +156,7 @@ public class Lehrer {
         }
         return false;
     }
-    
+    //findet den Index eines Tests in der List
     private int getIndexOfTest(String searchedFach,String searchedTestName) {
         for (int i = 0; i < Testliste.size(); i++) {
             Test test = Testliste.get(i);
@@ -155,7 +168,7 @@ public class Lehrer {
     }
 
     //addSchuelertoTest(Fach,Test,Schueler)
-
+    //fügt einen existierenden Schüler einem existierendem Test hinzu
     public void addSchuelertoTest(String Fachname,String Test,String Schueler){
         if(!isFachPresent(Fachname)){
             return;
@@ -165,12 +178,13 @@ public class Lehrer {
         }
         for (Test test:Testliste) {
             if(test.Fach==Fachname&&test.Testname==Test){
-                test.Testmap.put(Schueler,-1);
+                test.addSchueler(Schueler);
             }
             
         }
     }
     //removeSchuelerfromtTest(Fach,Test,Schueler)
+    //entfernt einen Schüler von Test
     public void removeSchuelerfromTest(String Fachname,String Test,String Schueler){
         if(!isFachPresent(Fachname)){
             return;
@@ -183,7 +197,7 @@ public class Lehrer {
                 if(!test.Testmap.containsKey(Schueler)){
                     return;
                 }
-                test.Testmap.remove(Schueler);
+                test.removeSchueler(Schueler);
                 
             }
             
@@ -191,6 +205,7 @@ public class Lehrer {
     }
     
     //getSchuelers(Fach,Test)
+    //sammelt eine Liste an Schülern die einem Test zugeordnet sind
     public String[] getSchuelersfromTest(String Fachname,String Test){
         if(!isFachPresent(Fachname)){
             return new String[0];
@@ -207,6 +222,7 @@ public class Lehrer {
         return new String[0];
     }
     //TestaddNote(Fach,Test,Schueler,Note)
+    //fügt einem Test eine Schüler Noten Kombo hinzu
     public void TestaddNote(String FachString,String TestString,String SchuelerString,int Note){
         if(!isFachPresent(FachString)){
             return;
@@ -227,6 +243,7 @@ public class Lehrer {
 
     }
     //TesteditNote(Fach,Test,Schueler,Note)
+    //bearbeitet Noteneintrag 
     public void TesteditNote(String FachString,String TestString,String SchuelerString,int newNote){
         if(!isFachPresent(FachString)){
             return;
@@ -248,6 +265,7 @@ public class Lehrer {
         
     }
     //TestremoveNote(Fach,Test,Schuler)
+    //entfern Note eines bestimmten Schülers
     public void TestremoveNote(String FachString,String TestString,String SchuelerString){
         if(!isFachPresent(FachString)){
             return;
@@ -269,6 +287,7 @@ public class Lehrer {
 
     }
     //TestremoveSchueler
+    //entfernt einen Schüler von einem Test
     public void TestremoveSchueler(String FachString,String TestString,String SchuelerString){
         if(!isFachPresent(FachString)){
             return;
@@ -292,6 +311,7 @@ public class Lehrer {
     
     
     //getNote(Fach,Test,Schueler)
+    //findet die Note eines Schülers in einem Test in einem Fach
     public Integer TestgetNote(String FachString,String TestString,String SchuelerString){
         if(!isFachPresent(FachString)){
             return -1;
@@ -314,6 +334,7 @@ public class Lehrer {
 
     }
     //getTestaverage
+    //berechnet den Notenschnitt eines Tests
     public int Testgetaverage(String fachString,String testString){
         if(!isFachPresent(fachString)){
             return -1;
@@ -333,6 +354,7 @@ public class Lehrer {
 
     
     //getFaecher
+    //erstellt ein Array aller Fächer
     public String[] getFaecher(){
         if(Fachliste.size()==0){
             return new String[0];
@@ -346,6 +368,7 @@ public class Lehrer {
         return temparr;
     }
     //getTests(Fach)
+    //erstellt ein Array aller Tests in einem Fach
     public String[] getTests(String fachString){
         if(!isFachPresent(fachString)){
             return new String[0];
@@ -362,7 +385,7 @@ public class Lehrer {
         return (String[]) temp.toArray();
         
     }
-    
+    //erstellt ein Array aller Schüler die einem Test in einem Fach zugeordnet sind
     public String[] getSchuelersfromFach(String fachString){
         ArrayList<String> temp =new ArrayList<String>();
         if(!isFachPresent(fachString)){
@@ -384,6 +407,7 @@ public class Lehrer {
     }
     //initTest(Fach,Test,[Schueler]).
     //getZeugnisnote(Fach,Schueler)
+    //berechnet die Durchschnittliche Note eines Schülers in allen Tests eines Fachs
     public Integer getZeugnisnote(String fachString,String schuelerString){
         int total=0;
         int anzahl=0;
@@ -421,6 +445,7 @@ public class Lehrer {
         return sb.toString();
     }
     public String toString(String Fachname,String Testname){
+        //debugginghilfe
         StringBuilder sb=new StringBuilder();
         sb.append("\nFach:"+Fachname);
         sb.append("\nTest:"+Testname);
@@ -434,6 +459,7 @@ public class Lehrer {
 
     }
     //convertentry(1-6)
+    //umrechnung von 1-6Schulnoten zu 0-15MSS Punkten
     public Integer converttoMSS(Integer In){
         if(In<1||In>6){
             return -1;
@@ -462,6 +488,7 @@ public class Lehrer {
             }
     }
     //convertexit(0-15)
+    //umrechnung von 0-15MSS punkten zu 1-6 Schulnote
     public Integer convertfromMSS(Integer In){
         if(In<0||In>15){
             return -1;
