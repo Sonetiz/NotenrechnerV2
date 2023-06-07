@@ -367,6 +367,32 @@ public class Lehrer {
         }
         return temparr;
     }
+    //erstellt ein Array aller Schüler
+    public String[]getSchuelers(){
+        if(Schülerliste.size()==0){
+            return new String[0];
+        }
+        String[] temparr=new String[Schülerliste.size()];
+        int i=0;
+        for(Schüler schüler:Schülerliste){
+            temparr[i]=schüler.Schülername;
+            i++;
+        }
+        return temparr;
+    }
+    //getTests
+    public String[]getTests(){
+        if(Testliste.size()==0){
+            return new String[0];
+        }
+        String[] temparr=new String[Testliste.size()];
+        int i=0;
+        for(Test test:Testliste){
+            temparr[i]=test.Testname;
+            i++;
+        }
+        return temparr;
+    }
     //getTests(Fach)
     //erstellt ein Array aller Tests in einem Fach
     public String[] getTests(String fachString){
@@ -385,6 +411,7 @@ public class Lehrer {
         return (String[]) temp.toArray();
         
     }
+    
     //erstellt ein Array aller Schüler die einem Test in einem Fach zugeordnet sind
     public String[] getSchuelersfromFach(String fachString){
         ArrayList<String> temp =new ArrayList<String>();
