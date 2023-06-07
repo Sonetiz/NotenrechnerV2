@@ -52,10 +52,10 @@ public static void main(String[] args)  {
     lehrer.addSchuelertoTest("Mathe", "Epo", "Simon");
     lehrer.addSchuelertoTest("Mathe", "Epo", "Max");
     lehrer.addSchuelertoTest("Mathe", "Epo", "Tobedeleted");
+    //Test getSchuelers
     System.out.println(lehrer.toString("Mathe", "Epo"));
     
     //Test removeSchueler
-    //Test getSchuelers
 
 
 

@@ -1,6 +1,5 @@
 package Notenrechnerv2;
 
-import java.text.BreakIterator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +57,13 @@ public class Test {
         }
         Testmap.put(SchuelerString,newNote);
     }
+    //removeNote(Schueler)
+    public void removeNote(String schuelerString){
+        if(!Testmap.containsKey(schuelerString)){
+            return;
+        }
+        Testmap.put(schuelerString,-1);
+    }
     //getNote(Schuler)
     public int getNote(String schuelerString){
         if(!Testmap.containsKey(schuelerString)){
@@ -65,6 +71,12 @@ public class Test {
         }
         return Testmap.get(schuelerString);
     }
+
+    //isSchuelerpresent(Schueler)
+    public boolean isSchuelerpresent(String Schuelerstring){
+        return Testmap.containsKey(Schuelerstring);
+        }
+        
     //getTestaverage()
     public int getTestaverage(){
         int anzahl=0;
