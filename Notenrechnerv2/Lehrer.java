@@ -384,7 +384,25 @@ public class Lehrer {
 
     }
     
-    //getSchuelers(Fach,Test)---------------
+    public String[] getSchuelersfromFach(String fachString){
+        ArrayList<String> temp =new ArrayList<String>();
+        if(!isFachPresent(fachString)){
+            return new String[0];
+        }
+        for(Test test : Testliste){
+            if(test.Fach==fachString){
+                String[] temp2=new String[test.getSchuelers().length];
+                temp2=test.getSchuelers();
+                for(int i=0;i<temp2.length;i++){
+                    if(!temp.contains(temp2[i])){
+                        temp.add(temp2[i]);
+                    }
+                }
+            }
+        }
+        return(String[]) temp.toArray();
+
+    }
     //initTest(Fach,Test,[Schueler])
     //getZeugnisnote(Fach,Schueler)
     //convertentry(1-6)
