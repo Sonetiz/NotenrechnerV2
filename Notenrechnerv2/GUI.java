@@ -53,11 +53,11 @@ public class GUI extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        JPanel FachselectorPanel = createFachPanel();
+        FachselectorPanel = createFachPanel();
         add(FachselectorPanel, BorderLayout.NORTH);
-        JPanel SchülerselectorPanel =createSchülerPanel();
+        SchülerselectorPanel =createSchülerPanel();
         add(SchülerselectorPanel,BorderLayout.CENTER);
-        JPanel TestselectorPanel =createTestPanel();
+        TestselectorPanel =createTestPanel();
         add(TestselectorPanel,BorderLayout.SOUTH);
 
         
@@ -197,12 +197,20 @@ public class GUI extends JFrame {
         selectTestLabel=new JLabel("Testauswahl");
         TestPanel.add(selectTestLabel);
         testselectfachBox=new JComboBox<>(lehrer.getFaecher());
-        testselectfachBox.setSelectedIndex(0);
+        if(testselectfach==null){
+
+            testselectfachBox.setSelectedIndex(0);
+        }
+        else{
+            testselectfachBox.setSelectedItem(testselectfach);
+        }
         testselectfachBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 testselectfach=testselectfachBox.getSelectedItem().toString();
+                
                 update();
+
             }
         });
         TestPanel.add(testselectfachBox);
@@ -236,9 +244,27 @@ public class GUI extends JFrame {
 
         return TestPanel;
     }
-    private void update(){
-
+    private void update() {
+        // Remove the old panels
+        remove(FachselectorPanel);
+        remove(SchülerselectorPanel);
+        remove(TestselectorPanel);
+    
+        // Create the updated panels
+        FachselectorPanel = createFachPanel();
+        SchülerselectorPanel = createSchülerPanel();
+        TestselectorPanel = createTestPanel();
+    
+        // Add the updated panels to the frame
+        add(FachselectorPanel, BorderLayout.NORTH);
+        add(SchülerselectorPanel, BorderLayout.CENTER);
+        add(TestselectorPanel, BorderLayout.SOUTH);
+    
+        // Revalidate and repaint the frame to reflect the changes
+        revalidate();
+        repaint();
     }
+    
 
 
    

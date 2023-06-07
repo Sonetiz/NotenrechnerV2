@@ -408,7 +408,7 @@ public class Lehrer {
         if(temp.size()==0){
             return new String[0];
         }
-        return (String[]) temp.toArray();
+        return temp.toArray(new String[temp.size()]);
         
     }
     
