@@ -47,6 +47,11 @@ public static void main(String[] args)  {
     lehrer.removeTest("Mathe","HUE");
 
     System.out.println(lehrer.toString());
+    //Test converters
+    System.out.println(lehrer.convertfromMSS(14));
+    System.out.println(lehrer.convertfromMSS(8));
+    System.out.println(lehrer.converttoMSS(14));
+    System.out.println(lehrer.convertfromMSS(2));
     //Test addSchueler
     lehrer.addSchuelertoTest("Mathe", "Epo", "Jonas");
     lehrer.addSchuelertoTest("Mathe", "Epo", "Simon");
@@ -59,11 +64,12 @@ public static void main(String[] args)  {
 
 
 
-
     //Test addNote
     //Test editNote
     //Test getNote
     //Test getTestaverage
+
+    
     
     
 }

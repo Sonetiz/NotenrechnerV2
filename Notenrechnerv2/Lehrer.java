@@ -403,8 +403,12 @@ public class Lehrer {
         return(String[]) temp.toArray();
 
     }
-    //initTest(Fach,Test,[Schueler])
+    //initTest(Fach,Test,[Schueler]).
     //getZeugnisnote(Fach,Schueler)
+
+
+
+
     //convertentry(1-6)
     public Integer converttoMSS(Integer In){
         if(In<1||In>6){
