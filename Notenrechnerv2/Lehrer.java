@@ -56,29 +56,6 @@ public class Lehrer {
         }
         return -1;
     }
-    public String toString(){
-        //Debugginghilfe
-        StringBuilder sb = new StringBuilder();
-        sb.append("\nSchüler:\n");
-        Schülerliste.forEach((schüler) -> { sb.append(schüler.Schülername + ", ");});
-        sb.append("\nFächer:\n");
-        Fachliste.forEach((fach) -> { sb.append(fach.Fachname + ", ");});
-
-        sb.append("\nTest im Fach:\n");
-        Testliste.forEach((test) -> {sb.append(test.Fach+" Test: "+test.Testname+"\n");});
-
-        return sb.toString();
-    }
-    public String toString(String Fachname,String Testname){
-        StringBuilder sb=new StringBuilder();
-        sb.append("\nFach\n"+Fachname);
-        sb.append("\nTest\n"+Testname);
-        for (String str : getSchuelersfromTest(Fachname, Testname)) {
-            sb.append(str);
-        }
-        return sb.toString();
-
-    }
     public void addSchüler(String Schülername){
         if(isSchülerPresent(Schülername)){
             return;
@@ -95,7 +72,7 @@ public class Lehrer {
         }
         //SChüler aus Schülerlist löschen
         Schülerliste.remove(index);
-
+        
     }
     public void editSchüler(String Istschülername, String Sollschülername){
         if(isSchülerPresent(Sollschülername)){
@@ -123,7 +100,7 @@ public class Lehrer {
 
 
 
-
+    
 
     public void addTest(String Fachname,String Testname){
         
@@ -138,7 +115,7 @@ public class Lehrer {
         Testliste.add(myTest);
     }
     public void editTest(String Fachname,String Isttestname, String Solltestname){
-        if(isTestPresent(Fachname,Isttestname)){
+        if(!isTestPresent(Fachname,Isttestname)){
             return;
         }
         int index=getIndexOfTest(Fachname,Isttestname);
@@ -268,7 +245,7 @@ public class Lehrer {
         }
 
 
-
+        
     }
     //TestremoveNote(Fach,Test,Schuler)
     public void TestremoveNote(String FachString,String TestString,String SchuelerString){
@@ -301,36 +278,37 @@ public class Lehrer {
         }
         for(Test test:Testliste){
             if(test.Fach==FachString&&test.Testname==TestString){
-            if(!test.isSchuelerpresent(SchuelerString)){
+                if(!test.isSchuelerpresent(SchuelerString)){
                 return;
             }
             test.removeSchueler(SchuelerString);
 
         }
-        }
+    }
 
 
-
+    
     }
     
-
+    
     //getNote(Fach,Test,Schueler)
-    public void TestgetNote(String FachString,String TestString,String SchuelerString){
+    public Integer TestgetNote(String FachString,String TestString,String SchuelerString){
         if(!isFachPresent(FachString)){
-            return;
+            return -1;
         }
         if(!isTestPresent(FachString,TestString)){
-            return;
+            return -1;
         }
         for(Test test:Testliste){
             if(test.Fach==FachString&&test.Testname==TestString){
             if(!test.isSchuelerpresent(SchuelerString)){
-                return;
+                return -1;
             }
-            test.getNote(SchuelerString);
+            return test.getNote(SchuelerString);
 
         }
-        }
+    }
+    return -1;
 
 
 
@@ -345,14 +323,15 @@ public class Lehrer {
         }
         for(Test test:Testliste){
             if(test.Fach==fachString&&test.Testname==testString){
+                
                 return test.getTestaverage();
             }
         }
         return -1;
-
+        
     }
 
-
+    
     //getFaecher
     public String[] getFaecher(){
         if(Fachliste.size()==0){
@@ -381,7 +360,7 @@ public class Lehrer {
             return new String[0];
         }
         return (String[]) temp.toArray();
-
+        
     }
     
     public String[] getSchuelersfromFach(String fachString){
@@ -400,15 +379,60 @@ public class Lehrer {
                 }
             }
         }
-        return(String[]) temp.toArray();
-
+        return temp.toArray(new String[temp.size()]);
+        
     }
     //initTest(Fach,Test,[Schueler]).
     //getZeugnisnote(Fach,Schueler)
+    public Integer getZeugnisnote(String fachString,String schuelerString){
+        int total=0;
+        int anzahl=0;
+        if(!isFachPresent(fachString)){
+            return -1;
+        }
+        for(Test test:Testliste){
+            if(test.isSchuelerpresent(schuelerString)){
+                if(test.getNote(schuelerString)!=-1){
+                    total+=test.getNote(schuelerString);
+                    anzahl++;
+                }
+            }
+        }
+        if(total==0){
+            return -1;
+        }
+        return total/anzahl;
+    }
+    
+    
+    
+    
+    public String toString(){
+        //Debugginghilfe
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nSchüler:\n");
+        Schülerliste.forEach((schüler) -> { sb.append(schüler.Schülername + ", ");});
+        sb.append("\nFächer:\n");
+        Fachliste.forEach((fach) -> { sb.append(fach.Fachname + ", ");});
 
+        sb.append("\nTest im Fach:\n");
+        Testliste.forEach((test) -> {sb.append(test.Fach+" Test: "+test.Testname+"\n");});
 
+        return sb.toString();
+    }
+    public String toString(String Fachname,String Testname){
+        StringBuilder sb=new StringBuilder();
+        sb.append("\nFach:"+Fachname);
+        sb.append("\nTest:"+Testname);
+        
+        for (int i=0;i<getSchuelersfromTest(Fachname, Testname).length;i++) {
+            sb.append("\nSchüler:"+getSchuelersfromTest(Fachname, Testname)[i]);
+            sb.append(" Note:");
+            sb.append(TestgetNote(Fachname,Testname,getSchuelersfromTest(Fachname,Testname)[i]));
+        }
+        return sb.toString();
 
-
+    }
     //convertentry(1-6)
     public Integer converttoMSS(Integer In){
         if(In<1||In>6){
@@ -421,21 +445,21 @@ public class Lehrer {
             case 2:
                 return 11;
                 
-            case 3:
+                case 3:
                 return 8;
                 
             case 4:
-                return 5;
-                
+            return 5;
+            
             case 5:
                 return 2;
                 
             case 6:
                 return 0;
                 
-            default:
+                default:
                 return -1;
-        }
+            }
     }
     //convertexit(0-15)
     public Integer convertfromMSS(Integer In){
@@ -444,7 +468,7 @@ public class Lehrer {
         }
         switch(In){
             case 0:
-                return 6;
+            return 6;
             case 1:
                 return 5;
                 

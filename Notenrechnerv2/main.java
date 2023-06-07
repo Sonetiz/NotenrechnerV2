@@ -11,23 +11,25 @@ public static void main(String[] args)  {
     lehrer.addFach("Englisch");
     lehrer.addFach("toberemoved");
     lehrer.addFach("tobeedited");
-    System.out.println(lehrer.toString());
+    //System.out.println(lehrer.toString());
     
     // fächer bearbeiten
     lehrer.editFach("tobeedited","edited" );
     
     // fächer löschen
     //lehrer.removeFach("Mathe");
-    System.out.println(lehrer.toString());
+    //System.out.println(lehrer.toString());
     lehrer.removeFach("toberemoved");
 
     //Schüler anlegen
 
     lehrer.addSchüler("Simon");
     lehrer.addSchüler("Jonas");
+    
 
     //Schüler bearbeiten
     lehrer.editSchüler("Simon","David");
+    
 
     //Schüler löschen
     lehrer.removeSchüler("Simon");
@@ -39,7 +41,7 @@ public static void main(String[] args)  {
     lehrer.addTest("Mathe","HUE");
     //gleichnamige Tests in verschiedenen Faechern wird nur das erste Objekt mit dem Testname gespeichert
 
-    System.out.println(lehrer.toString());
+    //System.out.println(lehrer.toString());
     //Test bearbeiten
     lehrer.editTest("Mathe","Epochalnote", "Epo");
 
@@ -48,29 +50,51 @@ public static void main(String[] args)  {
 
     System.out.println(lehrer.toString());
     //Test converters
-    System.out.println(lehrer.convertfromMSS(14));
-    System.out.println(lehrer.convertfromMSS(8));
-    System.out.println(lehrer.converttoMSS(14));
-    System.out.println(lehrer.convertfromMSS(2));
+    //System.out.println(lehrer.convertfromMSS(14));
+    //System.out.println(lehrer.convertfromMSS(8));
+    //System.out.println(lehrer.converttoMSS(14));
+    //System.out.println(lehrer.convertfromMSS(2));
     //Test addSchueler
+    lehrer.addSchüler("Simon");
+    lehrer.addSchüler("Max");
+    lehrer.addSchüler("Tobedeleted");
     lehrer.addSchuelertoTest("Mathe", "Epo", "Jonas");
     lehrer.addSchuelertoTest("Mathe", "Epo", "Simon");
     lehrer.addSchuelertoTest("Mathe", "Epo", "Max");
     lehrer.addSchuelertoTest("Mathe", "Epo", "Tobedeleted");
     //Test getSchuelers
-    System.out.println(lehrer.toString("Mathe", "Epo"));
+    lehrer.removeSchuelerfromTest("Mathe", "Epo", "Tobedeleted");
+
+    //Test add note &&getNote
+    lehrer.TestaddNote("Mathe", "Epo", "Simon", 2);
+    lehrer.TestaddNote("Mathe", "Epo", "Jonas", 3);
+    lehrer.TestaddNote("Mathe", "Epo", "Max", 1);
+    lehrer.TesteditNote("Mathe", "Epo", "Jonas", 4);
+    //lehrer.TestremoveNote("Mathe", "Epo", "Jonas");
+    //Test add Schueler to different  Fach to Test getSchuelersfromFach
+    lehrer.addSchüler("Deutschtester");
+    lehrer.addSchuelertoTest("Deutsch", "Klassenarbeit", "Deutschtester");
     
-    //Test removeSchueler
-
-
-
-    //Test addNote
-    //Test editNote
-    //Test getNote
-    //Test getTestaverage
-
     
+    //System.out.println(lehrer.getSchuelersfromFach("Deutsch"));
+
+
+
+    //System.out.println(lehrer.toString("Mathe", "Epo"));
     
+    //System.out.println(lehrer.Testgetaverage("Mathe", "Epo"));
+    //System.out.println(lehrer.getSchuelersfromTest("Mathe", "Epo").length);
+    
+    //Test Zeugnisnote
+    lehrer.addTest("Mathe", "Klassenarbeit");
+    lehrer.addTest("Mathe","Projekt");
+    lehrer.addSchuelertoTest("Mathe", "Klassenarbeit", "Simon");
+    lehrer.addSchuelertoTest("Mathe", "Projekt", "Simon");
+    lehrer.TestaddNote("Mathe", "Klassenarbeit", "Simon", 1);
+    lehrer.TestaddNote("Mathe", "Projekt", "Simon", 4);
+    
+    System.out.println("Zeugnisnote Simon:");
+    System.out.println(lehrer.getZeugnisnote("Mathe", "Simon"));
     
 }
 }
