@@ -45,7 +45,7 @@ public class GUI extends JFrame {
         //Konstruktor des GUIs
         lehrer = new Lehrer();
         fillwithexampledata(lehrer);
-
+        
         //Ueberschrift
         setTitle("Noten Manager by JMS™");
         setSize(1000, 140);
@@ -59,6 +59,12 @@ public class GUI extends JFrame {
         add(SchülerselectorPanel,BorderLayout.CENTER);
         TestselectorPanel =createTestPanel();
         add(TestselectorPanel,BorderLayout.SOUTH);
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
+                Tabelle windowTabelle =new Tabelle(lehrer);
+                windowTabelle.setVisible(true);
+            }
+        });
 
         
     }
@@ -93,6 +99,8 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //fach eintragen/bearbeiten
+                fachsaveButtonisclicked();
+
             }
         });
         FachPanel.add(fachsaveButton);
@@ -101,6 +109,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Fach entfernen
+                fachdeleteButtonisclicked();
             }
         });
         FachPanel.add(fachdeleteButton);
@@ -137,6 +146,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Schüler eintragen/bearbeiten
+                schuelersaveButtonisclicked();
             }
         });
         SchülerPanel.add(schülersaveButton);
@@ -145,6 +155,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Schüler entfernen
+                schuelerdeleteButtonisclicked();
             }
         });
         SchülerPanel.add(schülerdeleteButton);
@@ -182,6 +193,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Test eintragen/bearbeiten
+                testsaveButtonisclicked();
             }
         });
         TestPanel.add(testsaveButton);
@@ -190,6 +202,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Test entfernen
+                testdeleteButtonisclicked();
             }
         });
         TestPanel.add(testdeleteButton);
@@ -229,6 +242,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Popoutfenster Schülerselection
+                testinitButtonisclicked();
             }
         });
         TestPanel.add(testinitButton);
@@ -237,6 +251,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Popout Noteneintragen
+                testentryButtonisclicked();
             }
         });
         TestPanel.add(testentryButton);
@@ -264,7 +279,104 @@ public class GUI extends JFrame {
         revalidate();
         repaint();
     }
-    
+    public void fachsaveButtonisclicked(){
+        if(fachTextField.getText()==""){
+            JOptionPane.showMessageDialog(this,"Bitte Fach eintragen!");
+        }
+        if(fachcomboselection=="neues Fach erstellen"){
+            lehrer.addFach(fachTextField.getText());
+        }
+        else{
+            lehrer.editFach(fachcomboselection, fachTextField.getText());
+        }    
+        update();
+    }
+    public void fachdeleteButtonisclicked(){
+        if(fachcomboselection!="neues Fach erstellen"){
+            lehrer.removeFach(fachcomboselection);
+        }
+        update();
+    }
+    public void schuelersaveButtonisclicked(){
+        if(schülerTextField.getText()==""){
+            JOptionPane.showMessageDialog(this,"Bitte Schüler eintragen!");
+        }
+        if(fachcomboselection=="neuen Schüler erstellen"){
+            lehrer.addSchüler(fachTextField.getText());
+        }
+        else{
+            lehrer.editSchüler(schülercomboselection, schülerTextField.getText());
+        }    
+        update();
+    }
+    public void schuelerdeleteButtonisclicked(){
+        if(schülercomboselection!="neuen Schüler erstellen"){
+            lehrer.removeSchüler(schülercomboselection);
+        }
+        update();
+    }
+    public void testsaveButtonisclicked(){
+        if(testTextField.getText()==""){
+            JOptionPane.showMessageDialog(this,"Bitte Testnamen eintragen!");
+        }
+        if (testselectfach==null){
+            JOptionPane.showMessageDialog(this,"Bitte Fach auswaehlen!");
+        }
+        if(testcomboselection=="neuen Test erstellen"){
+            lehrer.addTest(testselectfach, testTextField.getText());
+        }
+        else{
+            lehrer.editTest(testselectfach, testcomboselection, testTextField.getText());
+        }
+        update();
+    } 
+    public void testdeleteButtonisclicked(){
+        if (testselectfach==null){
+            JOptionPane.showMessageDialog(this,"Bitte Fach auswaehlen!");
+        }
+        if(testcomboselection!="neuen Test erstellen"){
+            lehrer.removeTest(testselectfach, testcomboselection);
+        }
+        update();
+    }
+    public void testinitButtonisclicked(){
+        if (testselectfach==null){
+            JOptionPane.showMessageDialog(this,"Bitte Fach auswaehlen!");
+            return;
+        }
+        if (testselectcomboselection==null){
+            JOptionPane.showMessageDialog(this,"Bitte Test auswaehlen!");
+            return;
+        }
+        //run selection GUI(testselectfach,testselectcomboselection)
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
+                schuelerselectionGUI selectWindow=new schuelerselectionGUI(lehrer, testselectfach, testselectcomboselection);
+                selectWindow.setVisible(true);
+            }
+        });
+
+        update();
+
+    }
+    public void testentryButtonisclicked(){
+        if (testselectfach==null){
+            JOptionPane.showMessageDialog(this,"Bitte Fach auswaehlen!");
+        }
+        if (testselectcomboselection==null){
+            JOptionPane.showMessageDialog(this,"Bitte Test auswaehlen!");
+        }
+        //run NotenentryGUI(testselectfach,testselectcomboselection)
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
+                Notenentry entryWindow=new Notenentry(lehrer, testselectfach, testselectcomboselection);
+                entryWindow.setVisible(true);
+            }
+        });
+
+        update();
+
+    }
 
 
    

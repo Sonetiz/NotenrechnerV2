@@ -106,6 +106,9 @@ public class Test {
 
         }
         //selbsterklärend
+        if(anzahl==0){
+            return -1;
+        }
         return total/anzahl;
     }
     
