@@ -28,35 +28,35 @@ public class Tabelle extends JFrame {
         }
         JPanel tabPanel=new JPanel(new GridLayout(lehrer.getSchuelersfromFach(fach).length+2,lehrer.getTests(fach).length+2));
         JLabel fachLabel=new JLabel(fach);
-        add(fachLabel);
+        tabPanel.add(fachLabel);
         for(String test:lehrer.getTests(fach)){
             JLabel testLabel=new JLabel(test);
-            add(testLabel);
+            tabPanel.add(testLabel);
         }
         JLabel zLabel=new JLabel("Zeugnisnote:");
-        add(zLabel);
+        tabPanel.add(zLabel);
         for(String schueler:lehrer.getSchuelersfromFach(fach)){
             JLabel nLabel=new JLabel(schueler);
-            add(nLabel);
+            tabPanel.add(nLabel);
             for(String test:lehrer.getTests(fach)){
                 if(lehrer.TestgetNote(fach, test, schueler)==-1){
                     JLabel errorLabel=new JLabel("Note fehlt!");
-                    add(errorLabel);
+                    tabPanel.add(errorLabel);
                 }
                 else{
                     JLabel NotenLabel=new JLabel(lehrer.TestgetNote(fach, test, schueler).toString());
-                    add(NotenLabel);
+                    tabPanel.add(NotenLabel);
                 }
             }
             JLabel zeugnisLabel=new JLabel(lehrer.getZeugnisnote(fach,schueler).toString());
-            add(zeugnisLabel);
+            tabPanel.add(zeugnisLabel);
 
         }
         JLabel blankLabel=new JLabel("Notenschnitt Test");
-        add(blankLabel);
+        tabPanel.add(blankLabel);
         for(String test:lehrer.getTests(fach)){
             JLabel avgLabel=new JLabel(Integer.toString(lehrer.Testgetaverage(fach, test)));
-            add(avgLabel);
+            tabPanel.add(avgLabel);
         }
         return tabPanel;
     }
