@@ -1,100 +1,65 @@
 package Notenrechnerv2;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-//import all the things
 
 public class Tabelle extends JFrame {
     private Lehrer lehrer;
     private JPanel tabPanel;
-    private JPanel buttonPanel;
-    private JComboBox fachBox;
-    
-    private JButton updaButton;
-    private String fachselection;
-    private String testselection;
-    public Tabelle(Lehrer inLehrer){
+    private String fach;
+    public Tabelle(Lehrer inLehrer,String fachString){
         lehrer=inLehrer;
+        fach=fachString;
         setTitle("Tabelle");
         setSize(600,600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        JPanel buttonPanel=createbuttons();
-        //JPanel tabPanel=createTabelle();
-        add(buttonPanel,BorderLayout.NORTH);
-        //add(tabPanel,BorderLayout.CENTER);
-
-    }
-
-    private JPanel createbuttons(){
-        JPanel ButtonPanel=new JPanel(new GridLayout(1, 3));
-        fachBox=new JComboBox<>(lehrer.getFaecher());
-        fachBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                fachselection=fachBox.getSelectedItem().toString();
-                update();
-            }
-        });
-        ButtonPanel.add(fachBox);
-        if(fachselection!=null){
-            fachBox.setSelectedItem(fachselection);
-        }
+        
+        tabPanel=createTabelle();
        
-        JLabel Label=new JLabel("Testuebersicht");
-        ButtonPanel.add(Label);
+        add(tabPanel,BorderLayout.CENTER);
 
-        return ButtonPanel;
     }
+
+   
     private JPanel createTabelle(){
-        if(fachselection==null){
+        if(fach==null){
             return new JPanel();
         }
-        JPanel tabPanel=new JPanel(new GridLayout(lehrer.getSchuelersfromFach(fachselection).length+2,lehrer.getTests(fachselection).length+2));
-        JLabel fachLabel=new JLabel(fachselection);
+        JPanel tabPanel=new JPanel(new GridLayout(lehrer.getSchuelersfromFach(fach).length+2,lehrer.getTests(fach).length+2));
+        JLabel fachLabel=new JLabel(fach);
         add(fachLabel);
-        for(String test:lehrer.getTests(fachselection)){
+        for(String test:lehrer.getTests(fach)){
             JLabel testLabel=new JLabel(test);
             add(testLabel);
         }
         JLabel zLabel=new JLabel("Zeugnisnote:");
         add(zLabel);
-        for(String schueler:lehrer.getSchuelersfromFach(fachselection)){
+        for(String schueler:lehrer.getSchuelersfromFach(fach)){
             JLabel nLabel=new JLabel(schueler);
             add(nLabel);
-            for(String test:lehrer.getTests(fachselection)){
-                if(lehrer.TestgetNote(fachselection, test, schueler)==-1){
+            for(String test:lehrer.getTests(fach)){
+                if(lehrer.TestgetNote(fach, test, schueler)==-1){
                     JLabel errorLabel=new JLabel("Note fehlt!");
                     add(errorLabel);
                 }
                 else{
-                    JLabel NotenLabel=new JLabel(lehrer.TestgetNote(fachselection, test, schueler).toString());
+                    JLabel NotenLabel=new JLabel(lehrer.TestgetNote(fach, test, schueler).toString());
                     add(NotenLabel);
                 }
             }
-            JLabel zeugnisLabel=new JLabel(lehrer.getZeugnisnote(fachselection,schueler).toString());
+            JLabel zeugnisLabel=new JLabel(lehrer.getZeugnisnote(fach,schueler).toString());
             add(zeugnisLabel);
 
         }
-        JLabel blankLabel=new JLabel("");
+        JLabel blankLabel=new JLabel("Notenschnitt Test");
         add(blankLabel);
-        for(String test:lehrer.getTests(fachselection)){
-            JLabel avgLabel=new JLabel(Integer.toString(lehrer.Testgetaverage(fachselection, test)));
+        for(String test:lehrer.getTests(fach)){
+            JLabel avgLabel=new JLabel(Integer.toString(lehrer.Testgetaverage(fach, test)));
             add(avgLabel);
         }
         return tabPanel;
     }
 
-    private void update(){
-        removeAll();
-        buttonPanel=createbuttons();
-        tabPanel=createTabelle();
-        add(buttonPanel,BorderLayout.NORTH);
-        add(tabPanel,BorderLayout.CENTER);
-        revalidate();
-        repaint();
-    }
+    
 }

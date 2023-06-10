@@ -32,6 +32,9 @@ public class schuelerselectionGUI extends JFrame{
             boxPanel.add(schuelerLabel);
             JCheckBox checkbox =new JCheckBox();
            boxPanel.add(checkbox);
+           if(lehrer.TestisSchuelerpresent(fach,test,lehrer.getSchuelers()[i])){
+            checkbox.setSelected(true);
+           }
             checkbox.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){

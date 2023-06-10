@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 //import all the things
 public class Notenentry extends JFrame{
@@ -26,13 +25,16 @@ public class Notenentry extends JFrame{
         add(boxPanel,BorderLayout.CENTER);
     }
     private JPanel createboxPanel(){
-        JPanel boxPanel=new JPanel(new GridLayout(lehrer.getSchuelers().length+1, 2));
-        for(int i=0;i<lehrer.getSchuelers().length;i++){
+        JPanel boxPanel=new JPanel(new GridLayout(lehrer.getSchuelersfromTest(fach,test).length+1, 2));
+        for(int i=0;i<lehrer.getSchuelersfromTest(fach,test).length;i++){
             iterator=i;
-            JLabel schuelerLabel =new JLabel(lehrer.getSchuelers()[i]);
+            JLabel schuelerLabel =new JLabel(lehrer.getSchuelersfromTest(fach,test)[i]);
             boxPanel.add(schuelerLabel);
             JTextField Entryfield =new JTextField();
            boxPanel.add(Entryfield);
+           if(lehrer.TestgetNote(fach, test,lehrer.getSchuelersfromTest(fach,test)[i])!=-1){
+            Entryfield.setText(Integer.toString(lehrer.TestgetNote(fach, test,lehrer.getSchuelersfromTest(fach,test)[i])));
+           }
             Entryfield.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){
@@ -40,7 +42,7 @@ public class Notenentry extends JFrame{
                         return;
                     }
                     if(Entryfield.getText()!=null){
-                        selected.put(lehrer.getSchuelers()[iterator],Integer.parseInt(Entryfield.getText()));
+                        selected.put(lehrer.getSchuelersfromTest(fach,test)[iterator],Integer.parseInt(Entryfield.getText()));
                     }
                 }
             });
@@ -63,7 +65,12 @@ public class Notenentry extends JFrame{
     }
     private void saveButtonisclicked(){
         for(String name:selected.keySet()){
+            if(lehrer.TestgetNote(fach,test,name)==-1){
             lehrer.TestaddNote(fach, test, name, selected.get(name));
+            }
+            else{
+                lehrer.TesteditNote(fach, test, name, selected.get(name));
+            }
         }
         this.setVisible(false);
     }

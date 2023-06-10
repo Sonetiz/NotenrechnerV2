@@ -39,6 +39,11 @@ public class GUI extends JFrame {
     public JPanel FachselectorPanel;
     public JPanel SchülerselectorPanel;
     public JPanel TestselectorPanel;
+    public JPanel tabellenpanel;
+    public String tabellenFachselection;
+    private JButton tabelleupdateButton;
+    public GridBagLayout layout;
+    public GridBagConstraints c;
     
 
     public GUI() {
@@ -48,25 +53,53 @@ public class GUI extends JFrame {
         
         //Ueberschrift
         setTitle("Noten Manager by JMS™");
-        setSize(1000, 140);
+        setSize(1080, 165);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+        layout=new GridBagLayout();
+        setLayout(layout);
+        c =new GridBagConstraints();
+        c.fill=GridBagConstraints.BOTH;
+        c.gridx=0;
+        c.gridy=0;
 
         FachselectorPanel = createFachPanel();
-        add(FachselectorPanel, BorderLayout.NORTH);
+        add(FachselectorPanel,c);
+        c.gridy=1;
         SchülerselectorPanel =createSchülerPanel();
-        add(SchülerselectorPanel,BorderLayout.CENTER);
+        add(SchülerselectorPanel,c);
+        c.gridy=2;
         TestselectorPanel =createTestPanel();
-        add(TestselectorPanel,BorderLayout.SOUTH);
-        SwingUtilities.invokeLater(new Runnable(){
-            public void run(){
-                Tabelle windowTabelle =new Tabelle(lehrer);
-                windowTabelle.setVisible(true);
-            }
-        });
+        add(TestselectorPanel,c);
+        c.gridy=3;
+        tabellenpanel=TabeellenPanel();
+        add(tabellenpanel,c);
 
         
+    }
+    private JPanel TabeellenPanel(){
+        JPanel tabPanel=new JPanel(new GridLayout(1, 2));
+
+        fachComboBox=new JComboBox<>(lehrer.getFaecher());
+        fachComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                tabellenFachselection=fachComboBox.getSelectedItem().toString();
+            }
+        });
+        tabPanel.add(fachComboBox);
+        tabelleupdateButton = new JButton("Notenuebersich anzeigen");
+        tabelleupdateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Fach entfernen
+                showtable();
+            }
+        });
+        tabPanel.add(tabelleupdateButton);
+        return tabPanel;
+
+
     }
     //JPanel Fach
     private JPanel createFachPanel(){
@@ -259,6 +292,14 @@ public class GUI extends JFrame {
 
         return TestPanel;
     }
+    private void showtable(){
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
+                Tabelle windowTabelle =new Tabelle(lehrer,tabellenFachselection);
+                windowTabelle.setVisible(true);
+            }
+        });
+    }
     private void update() {
         // Remove the old panels
         remove(FachselectorPanel);
@@ -269,11 +310,17 @@ public class GUI extends JFrame {
         FachselectorPanel = createFachPanel();
         SchülerselectorPanel = createSchülerPanel();
         TestselectorPanel = createTestPanel();
+        tabellenpanel=TabeellenPanel();
     
         // Add the updated panels to the frame
-        add(FachselectorPanel, BorderLayout.NORTH);
-        add(SchülerselectorPanel, BorderLayout.CENTER);
-        add(TestselectorPanel, BorderLayout.SOUTH);
+        c.gridy=0;
+        add(FachselectorPanel,c);
+        c.gridy=1;
+        add(SchülerselectorPanel,c);
+        c.gridy=2;
+        add(TestselectorPanel,c);
+        c.gridy=3;
+        add(tabellenpanel,c);
     
         // Revalidate and repaint the frame to reflect the changes
         revalidate();

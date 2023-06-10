@@ -351,6 +351,21 @@ public class Lehrer {
         return -1;
         
     }
+    public boolean TestisSchuelerpresent(String fachString,String testString,String schuelerString){
+        if(!isFachPresent(fachString)){
+            return false;
+        }
+        if(!isTestPresent(fachString,testString)){
+            return false;
+        }
+        for(Test test:Testliste){
+            if(test.Fach==fachString&&test.Testname==testString){
+                
+                return test.isSchuelerpresent(schuelerString);
+            }
+        }
+        return false;
+    }
 
     
     //getFaecher
